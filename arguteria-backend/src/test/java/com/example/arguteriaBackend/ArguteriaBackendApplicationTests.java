@@ -1,10 +1,10 @@
-package com.example.arguteria;
+package com.example.arguteriaBackend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ArguteriaApplicationTests {
+class ArguteriaBackendApplicationTests {
 
 	@Test
 	void contextLoads() {
