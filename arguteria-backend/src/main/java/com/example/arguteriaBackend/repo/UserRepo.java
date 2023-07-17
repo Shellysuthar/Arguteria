@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface UserRepo extends JpaRepository<User,Integer> {
 
-    User findByEmailId(@Param("email") String email);
-    List<User>getAllUser();
+    User findByEmail(String email);
+    List<User> findAll();
     @Override
     Optional<User> findById(Integer integer);
-    List<User>getByUsername(@Param("username") String currentUser);
+    User findByUserName(String userName);
 
 }

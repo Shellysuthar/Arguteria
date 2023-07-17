@@ -1,6 +1,5 @@
 package com.example.arguteriaBackend.jwt;
 
-import com.example.arguteriaBackend.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

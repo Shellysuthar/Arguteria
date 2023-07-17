@@ -9,7 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.io.Serializable;
 
-@NamedQuery(name="Product.getAllProducts",query = "select new com.example.arguteriaBackend.model.Product(p.id,p.name,p.description,p.price,p.status) from Product p")
+
 @Data
 @Entity
 @AllArgsConstructor

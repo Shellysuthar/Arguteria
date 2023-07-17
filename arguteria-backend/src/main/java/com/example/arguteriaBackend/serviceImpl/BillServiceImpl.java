@@ -51,10 +51,10 @@ public class BillServiceImpl implements BillService {
         List<Bill> bills = new ArrayList<>();
         try{
             if(jwtFilter.isAdmin()){
-                bills= billRepo.getAllBills();
+                bills= billRepo.findAll();
             }
             else{
-                bills= billRepo.getBillByUsername( jwtFilter.getCurrentUser());
+                bills= billRepo.findAllByEmail(jwtFilter.getCurrentUser());
             }
         }catch (Exception ex){
             ex.printStackTrace();
@@ -71,8 +71,7 @@ public class BillServiceImpl implements BillService {
             bill.setEmail((String) requestMap.get("email"));
             bill.setTotalAmount((Number) requestMap.get("totalAmount"));
             bill.setProductDetail((String) requestMap.get("productDetail"));
-            bill.setCreatedBy(jwtFilter.getCurrentUser());
-//            bill.setCreatedBy((String) requestMap.get("createdBy"));
+
             billRepo.save(bill);
 
         }

@@ -17,5 +17,5 @@ public interface UserControl {
     public ResponseEntity<String> login (@RequestBody Map<String,String> requestMap);
     @CrossOrigin
     @GetMapping("/userDetails")
-    public ResponseEntity<List<User>> getAllUsers();
+    public ResponseEntity<?> getAllUsers();
 }

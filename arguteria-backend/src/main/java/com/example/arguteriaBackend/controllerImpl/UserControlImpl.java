@@ -43,7 +43,7 @@ public class UserControlImpl implements UserControl {
 
     @CrossOrigin
     @Override
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<?> getAllUsers() {
         try{
             return userService.getAllUser();
         }catch(Exception ex){

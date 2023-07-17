@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
-@RequestMapping("api/v1/")
+@RequestMapping("api/v1/bill")
 public interface BillControl{
-    @PostMapping("bill/generateBill")
-    ResponseEntity<String > generateBill(@RequestBody Map<String, Object> requestMap);
-    @GetMapping("bill")
+    @GetMapping
     ResponseEntity<List<Bill>> getBill();
+    @PostMapping("generateBill")
+    ResponseEntity<String > generateBill(@RequestBody Map<String, Object> requestMap);
+
 
 }

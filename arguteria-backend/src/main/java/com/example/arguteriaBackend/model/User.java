@@ -9,9 +9,9 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.io.Serializable;
 
-@NamedQuery(name="User.findByEmailId",query="select u from User u where u.email=:email")
-@NamedQuery(name="User.getAllUser",query="select new com.example.arguteriaBackend.model.User(u.id,u.firstName,u.lastName,u.email,u.userName,u.status) from User u where u.role='user'")
-@NamedQuery(name="User.getByUsername",query="select new com.example.arguteriaBackend.model.User(u.id,u.firstName,u.lastName,u.email,u.userName,u.status) from User u where u.email=:username")
+//@NamedQuery(name="User.findByEmailId",query="select u from User u where u.email=:email")
+//@NamedQuery(name="User.getAllUser",query="select new com.example.arguteriaBackend.model.User(u.id,u.firstName,u.lastName,u.email,u.userName,u.status) from User u where u.role='user'")
+//@NamedQuery(name="User.getByUsername",query="select new com.example.arguteriaBackend.model.User(u.id,u.firstName,u.lastName,u.email,u.userName,u.status) from User u where u.email=:username")
 @Data
 @Entity
 @AllArgsConstructor

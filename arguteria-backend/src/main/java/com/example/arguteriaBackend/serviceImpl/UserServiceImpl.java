@@ -10,7 +10,6 @@ import com.example.arguteriaBackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> signup(Map<String, String> requestMap) {
         try{
             if(this.validateSignupMap(requestMap)){
-                User user= userRepo.findByEmailId(requestMap.get("email"));
+                User user= userRepo.findByEmail(requestMap.get("email"));
                 if(Objects.isNull(user)){
                     userRepo.save(this.getUserFromMap(requestMap));
                     return Cafeutils.getResponseEntity("Successfully Registered", HttpStatus.OK);
@@ -125,12 +124,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<User>> getAllUser() {
+    public ResponseEntity<?> getAllUser() {
         try{
            if(jwtFilter.isAdmin()){
-               return new ResponseEntity<>(userRepo.getAllUser(),HttpStatus.OK);
+               return new ResponseEntity<>(userRepo.findAll(),HttpStatus.OK);
            }else
-               return new ResponseEntity<>(userRepo.getByUsername(jwtFilter.getCurrentUser()),HttpStatus.OK);
+               log.error("{}",userRepo.findByEmail(jwtFilter.getCurrentUser()));
+               return new ResponseEntity<>(userRepo.findByEmail(jwtFilter.getCurrentUser()),HttpStatus.OK);
         }catch(Exception ex){
             ex.printStackTrace();
         }
