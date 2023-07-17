@@ -8,6 +8,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface BillRepo extends JpaRepository<Bill,Integer> {
-
     List<Bill> findAllByEmail( String email );
 }

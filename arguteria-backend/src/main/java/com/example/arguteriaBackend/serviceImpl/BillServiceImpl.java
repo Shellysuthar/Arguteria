@@ -56,10 +56,12 @@ public class BillServiceImpl implements BillService {
             else{
                 bills= billRepo.findAllByEmail(jwtFilter.getCurrentUser());
             }
+            return new ResponseEntity<>(bills, HttpStatus.OK);
         }catch (Exception ex){
             ex.printStackTrace();
+            return new ResponseEntity<>(bills, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(bills, HttpStatus.OK);
+
     }
 
     private void insertBill(Map<String, Object> requestMap) {
