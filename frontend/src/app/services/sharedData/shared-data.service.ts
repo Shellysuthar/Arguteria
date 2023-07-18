@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import User from 'src/app/model/User';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SharedDataService {
+  constructor() {}
 
-  constructor() { }
   private userDetailsSetSource = new Subject<boolean>();
   userDetailsSet$ = this.userDetailsSetSource.asObservable();
   private userDetailsSubject = new BehaviorSubject<any>(
