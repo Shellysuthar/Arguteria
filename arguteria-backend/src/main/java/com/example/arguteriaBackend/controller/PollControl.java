@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-@CrossOrigin
 @RequestMapping("api/v1/poll")
 public interface PollControl {
     @PostMapping

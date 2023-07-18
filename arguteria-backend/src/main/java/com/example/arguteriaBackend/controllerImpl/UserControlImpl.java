@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
+@RequiredArgsConstructor
 public class UserControlImpl implements UserControl {
     private final UserService userService;
     @Override
