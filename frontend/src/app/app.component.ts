@@ -8,6 +8,7 @@ import { AuthService } from './services/auth/auth.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  [x: string]: any;
   isCollapsed: boolean = true;
   constructor(private router: Router, private authService: AuthService) {}
   isAuthenticated() {
