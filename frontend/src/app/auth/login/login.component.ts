@@ -2,15 +2,16 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   errorMessage: string = '';
   userDetails: any = null;
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit{
     private toastr: ToastrService,
     @Inject(DOCUMENT) private document: Document
   ) {}
+
   ngOnInit(): void {
     // this.router.events.subscribe((event) => {
     //   if (event instanceof NavigationEnd) {
@@ -37,6 +39,7 @@ export class LoginComponent implements OnInit{
       password: ['', Validators.required],
     });
   }
+
   onSubmit() {
     const email = this.loginForm.value.email;
     const password = this.loginForm.value.password;
@@ -72,6 +75,3 @@ export class LoginComponent implements OnInit{
     this.router.navigate(['/home']);
   }
 }
-
-
-

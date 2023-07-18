@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import User from 'src/app/model/User';
+import { Observable } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8080/api/v1/auth';
@@ -52,6 +52,4 @@ export class AuthService {
       },
     });
   }
-
-  
 }
