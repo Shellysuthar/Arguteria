@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule} from '@angular/router';
 import { AuthService } from './services/auth/auth.service';
 
 @Component({
@@ -8,6 +8,7 @@ import { AuthService } from './services/auth/auth.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  [x: string]: any;
   isCollapsed: boolean = true;
   constructor(private router: Router, private authService: AuthService) {}
   isAuthenticated() {
