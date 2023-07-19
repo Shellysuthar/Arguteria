@@ -5,6 +5,7 @@ import { OrderService } from 'src/app/services/order/order.service';
 import Bill from 'src/app/model/Bill';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import User from 'src/app/model/User';
 
 @Component({
   selector: 'app-cart',
@@ -14,7 +15,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class CartComponent {
   @Input() cartItems!: OrderItem[] ;
   @Output() productAdded = new EventEmitter();
-  userDetails:any;
+  userDetails!:User;
 
   constructor(    
     private toastr: ToastrService, 
@@ -63,10 +64,9 @@ export class CartComponent {
     } else {
       const orders: Bill = {
         // createdAt: new Date().toDateString(),
-        createdBy: this.userDetails[0].userName.toString(),
-        email: this.userDetails[0].email.toString(),
-        firstName: this.userDetails[0].firstName.toString(),
-        lastName: this.userDetails[0].lastName.toString(),
+        email: this.userDetails.email.toString(),
+        firstName: this.userDetails.firstName.toString(),
+        lastName: this.userDetails.lastName.toString(),
         productDetail: JSON.stringify(this.cartItems),
         totalAmount: this.calculateSubtotal(),
       };
@@ -77,7 +77,7 @@ export class CartComponent {
           console.log(res);
         },
         (error: HttpErrorResponse) => {
-          this.toastr.success('Your order is placed!', 'Order successful');
+          this.toastr.error('Error in placing order', 'Order Unsuccessful');
           console.log(error.message);
         }
       );

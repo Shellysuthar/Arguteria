@@ -1,5 +1,4 @@
 export default interface Bill {
-  createdBy: string;
   email: string;
   firstName: string;
   lastName: string;
