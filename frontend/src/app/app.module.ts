@@ -13,7 +13,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
@@ -29,7 +28,6 @@ import { JwtModule } from '@auth0/angular-jwt';
     DashboardComponent,
     OrderComponent,
     CartComponent,
-    AnalyticsComponent,
     MenuComponent,
     HomeComponent,
   ],

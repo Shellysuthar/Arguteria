@@ -18,7 +18,7 @@
     </h2>
   </div>
 
-  <div class="mt-5 w-4/6 grid grid-cols-3 gap-3 lg:grid-cols-4 sm:gap-3" *ngIf="items?.length > 0">
+  <div class="m-5 w-full grid grid-cols-3 gap-3 lg:grid-cols-4 sm:gap-4" *ngIf="items?.length > 0">
     <article *ngFor="let item of items" class="bg-white h-64 flex flex-col overflow-hidden rounded-lg border">
       <div class="aspect-square overflow-hidden">
         <img class="h-full w-full object-cover transition-all duration-300 group-hover:scale-125"
