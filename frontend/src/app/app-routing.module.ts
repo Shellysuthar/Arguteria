@@ -16,8 +16,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'menu', component: MenuComponent,canActivate: [AuthGuard],},
-  { path: 'orders', component: OrderComponent,canActivate: [AuthGuard],},
+  { path: 'menu', component: MenuComponent,canActivate: [AuthGuard]},
+  { path: 'orders', component: OrderComponent},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 

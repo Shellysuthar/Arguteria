@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-
+  navigateToSection(section: string) {
+    window.location.hash = '';
+    window.location.hash = section;
+}
 }

@@ -34,7 +34,7 @@ public class BillServiceImpl implements BillService {
                    requestMap.put("uuid", uuid);
                    this.insertBill(requestMap);
 
-               return new ResponseEntity<>("Created",HttpStatus.OK);
+               return new ResponseEntity<>("Bill Created",HttpStatus.OK);
             }
             else{
                 new ResponseEntity<>("Invalid Data",HttpStatus.BAD_REQUEST);

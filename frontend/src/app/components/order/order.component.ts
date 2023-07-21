@@ -1,13 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import OrderItem from 'src/app/model/OrderItem';
 import Bill from 'src/app/model/Bill';
+import { Observable, catchError, forkJoin, map, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { MenuService } from 'src/app/services/menu/menu.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
+import User from 'src/app/model/User';
 
 @Component({
   selector: 'app-order',
@@ -15,148 +15,86 @@ import { SharedDataService } from 'src/app/services/sharedData/shared-data.servi
   styleUrls: ['./order.component.css'],
 })
 export class OrderComponent implements OnInit {
-  userDetails!: any;
-  newOrderForm!: FormGroup;
-  order: OrderItem[] = [];
-  selectedOrderType: string = '';
-  selectedPaymentMethod: string = '';
-  items!: any;
+  userDetails!: User;
+  allOrders:Bill[] = [];
+  products!: any;
+  setProductDetails: boolean = false;
 
   constructor(
-    private fb: FormBuilder,
-    private toastr: ToastrService,
-    private orderService: OrderService,
-    private authService: AuthService,
+    private orderService: OrderService, 
+    private authService: AuthService, 
     private sharedDataService: SharedDataService,
-    private menuService: MenuService
   ) {}
 
   ngOnInit(): void {
     this.sharedDataService.userDetailsObservable.subscribe((userDetails) => {
       this.userDetails = userDetails;
     });
-  }
-
-  // decreaseQuantity(index: number) {
-  //   if (parseInt(this.order[index].quantity) > 1) {
-  //     this.order[index].quantity = (
-  //       parseInt(this.order[index].quantity) - 1
-  //     ).toString();
-  //     this.order[index].total = (
-  //       parseInt(this.order[index].price) * parseInt(this.order[index].quantity)
-  //     ).toFixed(2);
-  //   }
-  // }
-
-  // increaseQuantity(index: number) {
-  //   this.order[index].quantity = (
-  //     parseInt(this.order[index].quantity) + 1
-  //   ).toString();
-  //   this.order[index].total = (
-  //     parseInt(this.order[index].price) * parseInt(this.order[index].quantity)
-  //   ).toFixed(2);
-  // }
-
-  removeItem(index: number) {
-    this.order.splice(index, 1);
-  }
-
-  addFood() {
-    const currentOrder = this.newOrderForm.value;
-    if (currentOrder.food != '' && currentOrder.quantity != '') {
-      if (parseInt(currentOrder.quantity) < 1) {
-        this.toastr.warning(
-          'Number of items must be at least one',
-          'Invalid quantity'
-        );
-      } else {
-        this.newOrderForm = this.fb.group({
-          food: [''],
-          quantity: [''],
-          orderType: [this.selectedOrderType, Validators.required],
-          paymentMethod: [this.selectedPaymentMethod, Validators.required],
-        });
-
-        const foodAndPrice = currentOrder.food;
-        const [food, pr] = foodAndPrice.split(' - ');
-        const price = parseFloat(pr).toFixed(2);
-        const quantity = currentOrder.quantity;
-        const singleOrder: OrderItem = {
-          name: food,
-          price: parseInt(price),
-          quantity: parseInt(quantity),
-          total: parseInt(price) * parseInt(quantity),
-        };
-        this.order.push(singleOrder);
-      }
-    } else {
-      this.toastr.warning(
-        'Please choose both food option and the quantity',
-        'Invalid item'
+    if( this.getRole() ){
+      this.getOrders().subscribe(
+        orders => {
+          this.allOrders = orders;
+          // console.log(orders);
+        },
+        error => {
+          console.error(error);
+        }
       );
     }
-  }
-
-  calculateSubtotal(): number {
-    const sumTotal = this.order.reduce((acc, order) => {
-      return acc + order.total;
-    }, 0);
-    return sumTotal;
-  }
-
-  onOrderTypeChange(event: any) {
-    this.selectedOrderType = event.target.value;
-  }
-
-  onPaymentMethodChange(event: any) {
-    this.selectedPaymentMethod = event.target.value;
-  }
-
-  submitOrder() {
-    if (this.order.length === 0) {
-      this.toastr.warning(
-        'You did not add any food item',
-        'Please add some food options'
-      );
-    } else {
-      const orders: Bill = {
-        createdBy: this.userDetails[0].userName.toString(),
-        email: this.userDetails[0].email.toString(),
-        firstName: this.userDetails[0].firstName.toString(),
-        lastName: this.userDetails[0].lastName.toString(),
-        productDetail: JSON.stringify(this.order),
-        totalAmount: this.calculateSubtotal(),
-      };
-      // console.log(orders);
-      this.order = [];
-      this.newOrderForm = this.fb.group({
-        food: [''],
-        quantity: [''],
-        orderType: ['', Validators.required],
-        paymentMethod: ['', Validators.required],
-      });
-      this.orderService.addBill(orders).subscribe(
-        (res: any) => {
-          this.toastr.success('Your order is placed!', 'Order successful');
-          // console.log(res);
+    else{
+      //getBillsofUser
+      this.getOrders().subscribe(
+        orders => {
+          this.allOrders = orders;
+          console.log(this.allOrders);
         },
-        (error: HttpErrorResponse) => {
-          this.toastr.success('Your order is placed!', 'Order successful');
-          // console.log(error.message);
+        error => {
+          console.error(error);
         }
       );
     }
   }
 
-  getProducts() {
-    this.menuService.getProducts().subscribe(
-      (res: any) => {
-        // console.log(res);
-        this.items = res;
-      },
-      (error: HttpErrorResponse) => {
-        console.log(error.message);
-      }
+  getDate( bill: string ) : string {
+    let billDate = parseInt(bill.split('-')[1]); 
+    let date = new Date(billDate);
+    let parts = date.toLocaleDateString().split("/")
+    let myDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+    let options: Intl.DateTimeFormatOptions = { month: 'short', day: '2-digit', year: 'numeric'};
+    //console.log(myDate.toISOString());
+    return `${myDate.toLocaleDateString('en-US', options )} ${  this.formatTime(date.toLocaleTimeString()) }`;
+  }
+
+  formatTime(timeString:string): string {
+    const [hourString, minute] = timeString.split(":");
+    const hour = +hourString % 24;
+    return (hour % 12 || 12) + ":" + minute + (hour < 12 ? "AM" : "PM");
+}
+
+  getOrders(): Observable<any[]> {
+    return this.orderService.getAllBills().pipe(
+      map(allOrders => {
+        return allOrders.map((order: any) =>  {
+          const parsedProductDetail = JSON.parse(order.productDetail);
+          return { ...order, productDetail: parsedProductDetail };
+        });
+      })
     );
+  }
+
+  setProduct(id:number){
+    let order = this.allOrders.find((order) => order.id === id);
+    this.products = order?.productDetail ;
+    this.products.bill = order?.uuid;
+    this.products.total = order?.totalAmount;
+    this.setProductDetails = true;
+  }
+
+  markCompleted() : boolean{
+    return true;
+  }
+
+  getRole() {
+    return this.authService.getRole();
   }
 }

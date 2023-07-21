@@ -1,244 +1,66 @@
-<div
-  class="min-h-[110vh] lg:min-h-screen bg-gradient-to-r from-orange-600 to-yellow-600"
->
-  <div
-    class="max-w-md mx-auto min-h-screen py-12 px-4 sm:py-16 sm:px-6 lg:max-w-7xl lg:px-8"
-  >
-    <div class="sm:flex sm:items-center sm:justify-between">
-      <h2 class="text-3xl font-bold text-white mb-4 sm:mb-0">New Order</h2>
+<div [ngClass]="{'justify-center': setProductDetails==false}"
+  class="flex flex-row h-full gap-6 p-5 pt-16 justify-evenly">
+  <ng-container *ngIf="allOrders.length < 1">
+     <p class="text-gray-300 font-medium">No orders placed yet</p>
+  </ng-container>
+  <ng-container *ngIf="allOrders.length > 0">
+    <div class="w-1/2 flex flex-col gap-6 p-5">
+
+      <div *ngFor="let order of allOrders" class="w-full bg-white h-fit p-4 shadow-md border rounded-lg hover:border-2 hover:border-purple-600">
+        <ng-container *ngIf="order.id">
+          <button (click)="setProduct(order.id)" class="w-full flex flex-nowrap flex-row justify-between">
+            <div class="flex flex-col items-start">
+              <p class="text-lg text-gray-800 font-semibold items-start">{{order.uuid}}</p>
+              <p class="text-sm font-medium text-purple-600"> Ordered by: <span class="text-gray-600 font-normal">
+                  {{order.firstName}}</span> </p>
+              <p class="text-sm font-medium text-purple-600"> Total Items: <span
+                  class="text-gray-600 font-normal">{{order.productDetail.length}}</span> </p>
+            </div>
+            <div class="flex flex-col gap-4 items-end">
+              <p class="text-gray-800 font-medium">{{order.uuid && getDate(order.uuid)}}</p>
+              <p class="text-lg text-emerald-600 font-semibold">{{ order.totalAmount | currency : "INR"}}</p>
+            </div>
+          </button>
+        </ng-container>
+      </div>
     </div>
+  </ng-container>
+  <ng-container *ngIf="setProductDetails">
+    <div class="h-fit  bg-white shadow rounded-md px-4 py-6">
+      <h3 class="text-base font-semibold text-purple-900"> {{ products.bill }}</h3>
 
-    <form
-      [formGroup]="newOrderForm"
-      (ngSubmit)="submitOrder()"
-      class="mt-8 space-y-6"
-    >
-      <div class="flex justify-between">
-        <div class="w-[40%] mr-2">
-          <label for="food" class="block text-lg font-medium text-white">
-            Food(<span class="italic text-sm text-gray-300">required</span>
-            <span class="italic text-red-500">*</span>)
-          </label>
-          <div class="mt-1">
-            <select
-              id="food"
-              name="food"
-              formControlName="food"
-              class="p-4 form-select block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-700 rounded-md"
-            >
-              <option value="" disabled selected>Select food</option>
-              <option
-                *ngFor="let item of items"
-                [value]="item.name + ' - ' + item.price"
-              >
-                {{ item.name }} (₹{{ item.price }})
-              </option>
-            </select>
-          </div>
-        </div>
+      <ul class="mt-2">
+        <li *ngFor="let product of products ; let i = index" class="flex space-y-3 py-4 text-left">
+          <div class="sm:col-gap-4 sm:grid sm:grid-cols-3">
+            <div class="shrink-0">
+              <img class="h-16 w-24 max-w-full rounded-lg object-cover"
+                src="https://source.unsplash.com/random/600x360/?{{product.name}}" alt={{product.name}} />
+            </div>
+           
+              <div class="flex flex-col justify-between mx-3">
+                <p class="text-base font-semibold text-gray-900">{{product.name}} </p>
 
-        <div class="w-[40%] ml-2">
-          <label for="quantity" class="block text-lg font-medium text-white">
-            Quantity(<span class="italic text-sm text-gray-300">required</span>
-            <span class="italic text-red-500">*</span>)
-          </label>
-          <div class="mt-1">
-            <input
-              type="number"
-              min="1"
-              id="quantity"
-              name="quantity"
-              formControlName="quantity"
-              class="p-4 form-input shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-700 rounded-md"
-            />
-          </div>
-        </div>
-
-        <div
-          (click)="addFood()"
-          class="w-[15%] ml-2 mt-8 bg-red-500 rounded-lg flex justify-center items-center cursor-pointer"
-        >
-          <span class="text-white text-xl p-2"
-            ><i class="fa fa-plus mr-2"></i>Add food</span
-          >
-        </div>
-      </div>
-
-      <ng-container *ngIf="order.length != 0">
-        <div class="flex flex-col mt-8">
-          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div
-              class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
-            >
-              <div
-                class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
-              >
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Food
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Price
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Quantity
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Total
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <ng-container
-                      *ngFor="let singleOrder of order; let i = index"
-                    >
-                      <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="flex items-center">
-                            <div class="ml-4">
-                              <div class="text-sm font-medium text-gray-900">
-                                {{ singleOrder.name | uppercase }}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="text-sm text-gray-900">
-                            {{ singleOrder.price }}
-                          </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="text-sm text-gray-900">
-                            {{ singleOrder.quantity }}
-                          </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="text-sm text-gray-900">
-                            {{ singleOrder.total }}
-                          </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <div class="flex justify-start space-x-2">
-                            <button
-                              type="button"
-                       
-                              class="text-red-600 hover:text-red-900"
-                            >
-                              <i class="fas fa-minus"></i>
-                            </button>
-                            <button
-                              type="button"
-                     
-                              class="text-green-600 hover:text-green-900"
-                            >
-                              <i class="fas fa-plus"></i>
-                            </button>
-                            <button
-                              type="button"
-                              (click)="removeItem(i)"
-                              class="text-red-600 hover:text-red-900"
-                            >
-                              <i class="fas fa-times"></i>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    </ng-container>
-                  </tbody>
-                </table>
+                <p class="text-sm text-emerald-600">{{product.price | currency : "INR" }}<span class="text-base font-normal text-gray-400">
+                    x {{product.quantity}}</span></p>
               </div>
-            </div>
+              <div class="flex flex-col items-end">
+                {{ (product.price * product.quantity ) | currency : "INR" }}
+              </div>
           </div>
-          <div class="mt-4 flex justify-end">
-            <div class="text-white font-medium">Subtotal:</div>
-            <div class="ml-2 text-white font-medium">
-              {{ calculateSubtotal() }}
-            </div>
-          </div>
-        </div>
-      </ng-container>
+        </li>
+      </ul>
 
-      <div class="flex justify-between">
-        <div class="w-1/2 mr-2">
-          <label for="orderType" class="block text-lg font-medium text-white">
-            Order type(<span class="italic text-sm text-gray-300">required</span
-            ><span class="italic text-red-500">*</span>)
-          </label>
-          <div class="mt-1">
-            <select
-              id="orderType"
-              name="orderType"
-              formControlName="orderType"
-              class="p-4 form-select block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-700 rounded-md"
-              (change)="onOrderTypeChange($event)"
-            >
-              <option value="" disabled selected>Select order type</option>
-              <option value="dine-in">Dine in</option>
-              <option value="takeout">Takeout</option>
-              <option value="delivery">Delivery</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="w-1/2 ml-2">
-          <label
-            for="paymentMethod"
-            class="block text-lg font-medium text-white"
-          >
-            Payment Method(<span class="italic text-sm text-gray-300"
-              >required</span
-            >
-            <span class="italic text-red-500">*</span>)
-          </label>
-          <div class="mt-1">
-            <select
-              id="paymentMethod"
-              name="paymentMethod"
-              formControlName="paymentMethod"
-              class="p-4 form-select block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-700 rounded-md"
-              (change)="onPaymentMethodChange($event)"
-            >
-              <option value="" disabled selected>
-                Select a payment method
-              </option>
-              <option value="cash">Cash</option>
-              <option value="credit card">Credit Card</option>
-              <option value="debit card">Debit Card</option>
-              <option value="digital wallet">Digital Wallet</option>
-            </select>
-          </div>
-        </div>
+      <div class="mt-2 border-t py-2 flex items-center justify-between">
+        <p class="text-sm font-medium text-gray-900">Total</p>
+        <p class="text-lg font-semibold text-emerald-700">{{products.total | currency : "INR"}}</p>
       </div>
 
-      <div class="flex items-center justify-end mt-6">
-        <button
-          type="submit"
-          class="text-white text-2xl bg-blue-500 rounded-lg p-3"
-          [disabled]="newOrderForm.invalid"
-        >
-          Place order
+      <div class="mt-6 text-center">
+        <button type="button" (click)="markCompleted()"
+          class="group inline-flex w-full items-center justify-center rounded-md bg-purple-900 px-4 py-2 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-purple-800">
+          Mark as Completed
         </button>
       </div>
-    </form>
-  </div>
+    </div>
+  </ng-container>
 </div>

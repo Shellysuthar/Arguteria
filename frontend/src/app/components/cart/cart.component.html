@@ -1,76 +1,72 @@
-
-  <div class="flex items-center justify-center">
-    <h1 class="text-2xl font-semibold text-gray-900">Your Cart</h1>
-  </div>
-  <div class="flex p-6 pt-24 justify-center items-center" *ngIf="cartItems.length < 1">
-    <h4 class="text-base text-gray-300 mb-4 sm:mb-0">
-      Items to be added in cart
-    </h4>
-  </div>
-  <div class="px-4 py-6 sm:px-8 sm:py-10">
-    <div class="flow-root">
-      <ul class="-my-8">
-        <li *ngFor="let item of cartItems ; let i = index" class="flex space-y-3 py-4 text-left">
-          <div class="sm:col-gap-4 sm:grid sm:grid-cols-3">
-            <div class="shrink-0">
-              <img class="h-16 w-24 max-w-full rounded-lg object-cover"
-                src="https://source.unsplash.com/random/600x360/?{{item.name}}" alt={{item.name}} />
+<div class="flex items-center justify-center">
+  <h1 class="text-2xl font-semibold text-gray-900">Your Cart</h1>
+</div>
+<div class="flex p-6 pt-24 justify-center items-center" *ngIf="cartItems.length < 1">
+  <h4 class="text-base text-gray-300 mb-4 sm:mb-0">
+    Items to be added in cart
+  </h4>
+</div>
+<div class="px-4 py-6 sm:px-8 sm:py-10">
+  <div class="flow-root">
+    <ul class="-my-8">
+      <li *ngFor="let item of cartItems ; let i = index" class="flex space-y-3 py-4 text-left">
+        <div class="sm:col-gap-4 sm:grid sm:grid-cols-3">
+          <div class="shrink-0">
+            <img class="h-16 w-24 max-w-full rounded-lg object-cover"
+              src="https://source.unsplash.com/random/600x360/?{{item.name}}" alt={{item.name}} />
+          </div>
+          <div class="flex flex-col justify-between mx-3">
+            <div class="flex flex-col">
+              <p class="text-base font-semibold text-gray-900">{{item.name}}</p>
+              <p class="text-sm text-emerald-600">{{ (item.price * item.quantity ) | currency : "INR" }}</p>
             </div>
-            <div class="flex flex-col justify-between mx-3">
-              <div class="flex flex-col">
-                <p class="text-base font-semibold text-gray-900">{{item.name}}</p>
-                <p class="text-sm text-emerald-600">{{ (item.price * item.quantity ) | currency : "INR" }}</p>
-              </div>
-              <div class="flex h-4 text-gray-600">
-                <button
-                  (click) = "decreaseQuantity(i)"
-                  class="flex items-center justify-center rounded-full bg-gray-200 px-2 transition hover:bg-black hover:text-white">-</button>
-                <span class="flex items-center justify-center px-4 text-xs uppercase transition">{{item.quantity || 1}}</span>
-                <button
-                (click) = "increaseQuantity(i)"
-                  class="flex items-center justify-center rounded-full bg-gray-200 px-2 transition hover:bg-black hover:text-white">+</button>
-              </div>
-            </div>
-            <div class="flex justify-self-end">
-              <button type="button"
-              (click)="removeItem(i)"
-                class="flex rounded px-2 text-center text-gray-500 transition-all duration-5 ease-in-out hover:text-gray-900">
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"
-                    class=""></path>
-                </svg>
-              </button>
+            <div class="flex h-4 text-gray-600">
+              <button (click)="decreaseQuantity(i)"
+                class="flex items-center justify-center rounded-full bg-gray-200 px-2 transition hover:bg-black hover:text-white">-</button>
+              <span class="flex items-center justify-center px-4 text-xs uppercase transition">{{item.quantity ||
+                1}}</span>
+              <button (click)="increaseQuantity(i)"
+                class="flex items-center justify-center rounded-full bg-gray-200 px-2 transition hover:bg-black hover:text-white">+</button>
             </div>
           </div>
-        </li>
-      </ul>
-    </div>
+          <div class="flex justify-self-end">
+            <button type="button" (click)="removeItem(i)"
+              class="flex rounded px-2 text-center text-gray-500 transition-all duration-5 ease-in-out hover:text-gray-900">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" class="">
+                </path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
 
-    <div class="mt-6 border-t border-b py-2">
-      <div class="flex items-center justify-between">
-        <p class="text-sm text-gray-400">Subtotal</p>
-        <p class="text-sm font-semibold text-gray-900">{{calculateSubtotal()| currency : "INR"}}</p>
-      </div>
-      <div class="flex items-center justify-between">
-        <p class="text-sm text-gray-400">Tax</p>
-        <p class="text-sm font-semibold text-gray-900">9.00</p>
-      </div>
+  <div class="mt-6 border-t border-b py-2">
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-gray-400">Subtotal</p>
+      <p class="text-sm font-semibold text-gray-900">{{calculateSubtotal()| currency : "INR"}}</p>
     </div>
-    <div class="mt-6 flex items-center justify-between">
-      <p class="text-sm font-medium text-gray-900">Total</p>
-      <p class="text-lg font-semibold text-emerald-700">{{calculateSubtotal()+9 | currency : "INR"}}</p>
-    </div>
-
-    <div class="mt-6 text-center">
-      <button type="button"
-        (click) = "placeOrder()"
-        class="group inline-flex w-full items-center justify-center rounded-md bg-purple-900 px-4 py-2 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-purple-800">
-        Checkout
-        <svg xmlns="http://www.w3.org/2000/svg" class="group-hover:ml-8 ml-4 h-6 w-6 transition-all" fill="none"
-          viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
-      </button>
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-gray-400">Tax</p>
+      <p class="text-sm font-semibold text-gray-900">9.00</p>
     </div>
   </div>
+  <div class="mt-6 flex items-center justify-between">
+    <p class="text-sm font-medium text-gray-900">Total</p>
+    <p class="text-lg font-semibold text-emerald-700">{{calculateSubtotal()+9 | currency : "INR"}}</p>
+  </div>
+
+  <div class="mt-6 text-center">
+    <button type="button" (click)="placeOrder()"
+      class="group inline-flex w-full items-center justify-center rounded-md bg-purple-900 px-4 py-2 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-purple-800">
+      Checkout
+      <svg xmlns="http://www.w3.org/2000/svg" class="group-hover:ml-8 ml-4 h-6 w-6 transition-all" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+      </svg>
+    </button>
+  </div>
+</div>
