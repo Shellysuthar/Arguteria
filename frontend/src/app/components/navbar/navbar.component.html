@@ -1,5 +1,5 @@
-<nav class="fixed top-0 left-0 w-full py-2 ">
-  <div class="mx-auto px-2 sm:px-6 lg:px-8">
+<nav class="fixed backdrop-blur-lg left-0 w-full py-2">
+  <div class="px-2 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-5 lg:h-10">
       <a
         routerLink="/home"
@@ -16,6 +16,19 @@
           >Arguteria</span
         >
       </a>
+      <div class="text-gray-600 dark:text-gray-300 lg:pr-4">
+        <ul class="font-medium text-base flex space-y-0 space-x-2">
+          <li routerLink="/orders" class="block cursor-pointer md:px-4 transition hover:text-purple-500 hover:underline ">      
+            <span>Orders</span>      
+          </li>
+          <li routerLink="/menu" class="block cursor-pointer md:px-4 transition hover:text-purple-500 hover:underline ">      
+            <span>Menu</span>      
+          </li>
+          <li routerLink="/poll" class="block cursor-pointer md:px-4 transition hover:text-purple-500 hover:underline ">
+            <span>Poll</span>      
+          </li>
+        </ul>
+      </div>
       <div class="flex items-center">
         <ng-container *ngIf="!isAuthenticated()">
           <a
@@ -31,15 +44,11 @@
             Register
           </a>
         </ng-container>
-        <ng-container *ngIf="isAuthenticated()">
-          <button
-            class="text-gray-800 hover:bg-gray-700 hover:text-white px-2 py-1 lg:px-3 lg:py-2 rounded-md"
-          >
+        <ng-container *ngIf="isAuthenticated()">          
             <ng-container *ngIf="!getRole()">
-              {{ userDetails[0].userName }}
+              {{ userDetails.userName }}
             </ng-container>
             <ng-container *ngIf="getRole()"> ADMIN </ng-container>
-          </button>
           <a
             (click)="logOut()"
             class="cursor-pointer bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 lg:px-4 lg:py-2 rounded-md ml-2 lg:ml-4"

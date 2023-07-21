@@ -1,8 +1,10 @@
 export default interface Bill {
-  createdBy: string;
+  id?:number,
+  uuid?: string,
   email: string;
   firstName: string;
   lastName: string;
   productDetail: string; //previously Order[] = [];
   totalAmount: number;
+  status?: string;
 }

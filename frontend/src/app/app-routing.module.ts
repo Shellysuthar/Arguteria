@@ -1,7 +1,7 @@
 import { OrderComponent } from './components/order/order.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { AuthGuard } from './guard/auth.guard';
-import { AnalyticsComponent } from './components/analytics/analytics.component';
+// import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { HomeComponent } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -13,19 +13,11 @@ import { CartComponent } from './components/cart/cart.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  {
-    path: 'dashboard',
-    component: DashboardComponent
-  },
-  { path: 'menu', component: MenuComponent},
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'menu', component: MenuComponent,canActivate: [AuthGuard]},
   { path: 'orders', component: OrderComponent},
-  {
-    path: 'cart',
-    component: CartComponent,
-    // canActivate: [AuthGuard],
-  },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 

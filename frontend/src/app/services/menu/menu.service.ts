@@ -23,7 +23,10 @@ export class MenuService {
     return this.http.post(`${this.baseUrl}`, product, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'text/plain' // Set Accept header to receive plain text response
       },
+      responseType: 'text' 
     });
   }
 
