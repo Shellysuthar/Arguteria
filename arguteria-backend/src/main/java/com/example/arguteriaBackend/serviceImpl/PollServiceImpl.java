@@ -18,9 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -55,7 +56,7 @@ public class PollServiceImpl implements PollService {
     }
 
     public ResponseEntity<List<Poll>> getPolls() {
-        return new ResponseEntity<>(pollRepo.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(pollRepo.findAllByOrderByEndDateDesc(), HttpStatus.OK);
     }
 
     public ResponseEntity<List<Poll>> getVisiblePolls() {
@@ -65,10 +66,10 @@ public class PollServiceImpl implements PollService {
     public ResponseEntity<String> vote(Integer id, Integer optionId) {
     Optional<Poll> poll = pollRepo.findById(id);
     //check end-date
-    if ( poll.isPresent() && poll.get().getEndDate().before(new Date())) {
+    if ( poll.isPresent() && poll.get().getEndDate().isBefore(LocalDateTime.now())) {
         return new ResponseEntity<>("The Poll has expired", HttpStatus.OK);
     }
-    //System.out.println(poll.isPresent());
+    System.out.println(poll.isPresent());
 
     User user = userRepo.findByEmail(jwtFilter.getCurrentUser());
     String userId = Integer.toString(user.getId());

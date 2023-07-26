@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface PollRepo extends JpaRepository<Poll, Integer> {
 
-    List<Poll> findAll();
+    List<Poll> findAllByOrderByEndDateDesc();
     @Query(value ="SELECT p FROM Poll p WHERE p.visible=true")
     public List<Poll> findAllByVisible(boolean b);
 

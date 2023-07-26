@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,14 +26,15 @@ public class Poll implements Serializable {
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "poll")
     private List<Option> options;
 
-    private List<String> votedUsers;
+    private List<String> votedUsers = new ArrayList<>();
 
     private String title;
 
-    private Boolean visible;
+    private Boolean visible = true;
 
-    @Temporal(TemporalType.DATE)
-    private Date endDate;
+    @Column(columnDefinition = "DATETIME")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime endDate;
 
     public Integer getId() {
         return id;
@@ -64,11 +68,11 @@ public class Poll implements Serializable {
         this.options = options;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
