@@ -19,6 +19,8 @@ import { HomeComponent } from './components/home/home.component';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { JwtModule } from '@auth0/angular-jwt';
+import { PollComponent } from './components/poll/poll.component';
+import { AddPollComponent } from './components/add-poll/add-poll.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +32,8 @@ import { JwtModule } from '@auth0/angular-jwt';
     CartComponent,
     MenuComponent,
     HomeComponent,
+    PollComponent,   
+    AddPollComponent,
   ],
   imports: [
     BrowserModule,

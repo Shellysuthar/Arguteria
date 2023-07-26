@@ -42,7 +42,7 @@ export class OrderComponent implements OnInit {
       );
     }
     else{
-      //getBillsofUser
+      //todo: getBillsofUser
       this.getOrders().subscribe(
         orders => {
           this.allOrders = orders;

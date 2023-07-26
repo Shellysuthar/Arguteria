@@ -9,6 +9,8 @@ import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
 import { NgModule } from '@angular/core';
 import { CartComponent } from './components/cart/cart.component';
+import { PollComponent } from './components/poll/poll.component';
+import { AddPollComponent } from './components/add-poll/add-poll.component';
 
 
 
@@ -17,6 +19,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'menu', component: MenuComponent,canActivate: [AuthGuard]},
+  { path: 'poll', component: PollComponent},
   { path: 'orders', component: OrderComponent},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
