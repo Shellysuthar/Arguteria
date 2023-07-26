@@ -21,7 +21,7 @@
       for={{option.option}}
       >{{option.option}}  </label>
       <ng-container *ngIf="getRole()">     
-        <p class="text-[20px] font-semibold text-purple-800">Vote: {{ !checkIsNaN(option.result) ? option.result + '%' : 'No votes' }} </p>
+        <p class="text-[20px] font-semibold text-purple-800">Vote: {{ !checkIsNaN(option.result) ? (option.result | number : '1.2-2') + '%' : 'No votes' }} </p>
       </ng-container>
         
   </div>
