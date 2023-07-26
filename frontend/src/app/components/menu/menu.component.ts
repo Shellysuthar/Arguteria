@@ -64,6 +64,7 @@ export class MenuComponent implements OnInit {
         console.log(error.message);
       }
     );
+    this.addItemForm.reset();
     this.closeAddModal();
   }
 

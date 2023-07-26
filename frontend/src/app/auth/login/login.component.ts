@@ -21,18 +21,10 @@ export class LoginComponent implements OnInit {
     private sharedDataService: SharedDataService,
     private router: Router,
     private toastr: ToastrService,
-    @Inject(DOCUMENT) private document: Document
   ) {}
 
   ngOnInit(): void {
-    // this.router.events.subscribe((event) => {
-    //   if (event instanceof NavigationEnd) {
-    //     if (event.url === '/login' || event.url === '/register') {
-    //       localStorage.removeItem('authToken');
-    //       this.document.defaultView?.location.reload();
-    //     }
-    //   }
-    // });
+ 
     localStorage.removeItem('token');
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
