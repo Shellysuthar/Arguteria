@@ -11,8 +11,18 @@ import java.util.Map;
 public interface BillControl{
     @GetMapping
     ResponseEntity<List<Bill>> getBill();
+
+    @GetMapping("completed")
+    ResponseEntity<List<Bill>> getCompletedBill();
+
+    @GetMapping("pending")
+    ResponseEntity<List<Bill>> getPendingBill();
+
     @PostMapping("generateBill")
     ResponseEntity<String > generateBill(@RequestBody Map<String, Object> requestMap);
+
+    @PostMapping("/{id}")
+    ResponseEntity<String > updateStatus(@PathVariable Integer id);
 
 
 }

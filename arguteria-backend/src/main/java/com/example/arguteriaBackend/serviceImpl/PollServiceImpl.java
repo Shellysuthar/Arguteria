@@ -80,7 +80,7 @@ public class PollServiceImpl implements PollService {
     }
     Optional<Option> option = optionRepo.findById(optionId);
     if( option.isPresent()) {
-        log.info("Inside vote{} ", option);
+//        log.info("Inside vote{} ", option);
         option.get().setScore(option.get().getScore() + 1);
         optionRepo.save(option.get());
         poll.get().getVotedUsers().add(userId);
@@ -104,26 +104,3 @@ public class PollServiceImpl implements PollService {
     }
 
 }
-
-
-
-//    public Poll getPollById(Long id) {
-//        return pollRepository.getOne(id);
-//    }
-//
-//    public void deletePollById(Long id) {
-//        pollRepository.deleteById(id);
-//    }
-//
-
-//
-//    public List<Poll> getAllForUser(String username) {
-//        User user = userRepository.findOneByUsername(username);
-//        return pollRepository.findAllByUser(user);
-//    }
-//
-//    public List<Poll> getAllVisibleForUser(String username) {
-//        User user = userRepository.findOneByUsername(username);
-//
-//        return pollRepository.findAllByUserAndVisible(user, true);
-//    }

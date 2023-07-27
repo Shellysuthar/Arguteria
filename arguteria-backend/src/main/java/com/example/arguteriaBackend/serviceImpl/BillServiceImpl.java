@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -64,6 +65,59 @@ public class BillServiceImpl implements BillService {
 
     }
 
+    @Override
+    public ResponseEntity<List<Bill>> getCompletedBill() {
+        List<Bill> bills = new ArrayList<>();
+        try{
+            if(jwtFilter.isAdmin()){
+                bills= billRepo.findAllByCompleted(true);
+            }
+            else{
+                bills= billRepo.findAllByEmailCompleted(jwtFilter.getCurrentUser(),true);
+            }
+            return new ResponseEntity<>(bills, HttpStatus.OK);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new ResponseEntity<>(bills, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<Bill>> getPendingBill() {
+        List<Bill> bills = new ArrayList<>();
+        try{
+            if(jwtFilter.isAdmin()){
+                bills= billRepo.findAllByCompleted(false);
+            }
+            else{
+                bills= billRepo.findAllByEmailCompleted(jwtFilter.getCurrentUser(), false);
+            }
+            return new ResponseEntity<>(bills, HttpStatus.OK);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new ResponseEntity<>(bills, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> updateStatus(Integer id) {
+        try{
+            Optional<Bill> bill = billRepo.findById(id);
+            if(bill.isPresent() && bill.get().isCompleted() != true){
+                bill.get().setCompleted(true);
+                billRepo.save(bill.get());
+//                System.out.println(bill.get().isCompleted());
+            }
+            else{
+                return new ResponseEntity<>("Bill not found or already complete", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Status Updated", HttpStatus.OK);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new ResponseEntity<>("Server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
     private void insertBill(Map<String, Object> requestMap) {
         try{
             Bill bill = new Bill();
@@ -73,7 +127,6 @@ public class BillServiceImpl implements BillService {
             bill.setEmail((String) requestMap.get("email"));
             bill.setTotalAmount((Number) requestMap.get("totalAmount"));
             bill.setProductDetail((String) requestMap.get("productDetail"));
-
             billRepo.save(bill);
 
         }

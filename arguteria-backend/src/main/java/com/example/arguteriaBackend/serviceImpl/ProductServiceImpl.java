@@ -96,12 +96,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private Product getProductFromMap(Map<String, String> requestMap) {
-        Product product=new Product();
-        product.setName(requestMap.get("name"));
-        product.setDescription(requestMap.get("description"));
-        product.setPrice(Integer.parseInt(requestMap.get("price")));
+        Product product=new Product(requestMap.get("name"),
+                                    requestMap.get("description"),
+                                    Integer.parseInt(requestMap.get("price")));
         return product;
-
     }
 
     private boolean validateProductMap(Map<String,String> requestMap){

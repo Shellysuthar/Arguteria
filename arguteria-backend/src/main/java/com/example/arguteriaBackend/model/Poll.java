@@ -26,6 +26,14 @@ public class Poll implements Serializable {
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "poll")
     private List<Option> options;
 
+    public List<String> getVotedUsers() {
+        return votedUsers;
+    }
+
+    public void setVotedUsers(List<String> votedUsers) {
+        this.votedUsers = votedUsers;
+    }
+
     private List<String> votedUsers = new ArrayList<>();
 
     private String title;
