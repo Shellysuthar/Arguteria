@@ -31,4 +31,34 @@ export class OrderService {
       },
     });
   }
+
+  getPendingBills(): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.get(`${this.baseUrl}/pending`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
+  getCompletedBills(): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.get(`${this.baseUrl}/completed`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
+  updateStatus(id:number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.post(`${this.baseUrl}/${id}`, null,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'text/plain' // Set Accept header to receive plain text response
+      },
+      responseType: 'text'
+    });
+  }
 }

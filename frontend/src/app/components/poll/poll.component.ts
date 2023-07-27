@@ -86,11 +86,8 @@ export class PollComponent implements OnInit {
   }
 
   formatEndDate(dateTime: string): string {
-    let date = new Date(dateTime);
-    // console.log(dateTime)
-    // console.log( date.toLocaleTimeString())
-    return date.toLocaleString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-    // Output: "25 July 2023, 18:30" 
+    let date = new Date(dateTime);    
+    return date.toLocaleString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' ,hour: 'numeric', minute: 'numeric'});
 }
 
   getPolls() {

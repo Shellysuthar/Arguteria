@@ -1,5 +1,5 @@
 <!-- menu.component.html -->
-<div [ngClass]="{'flex-col': getRole()}" class="flex items-center bg-gray-100 py-12 sm:py-16 lg:py-20 text-gray-700">
+<div [ngClass]="{'flex-col items-center': getRole()}" class="flex items-start bg-gray-100 py-12 sm:py-16 lg:py-20 text-gray-700">
   <ng-container *ngIf="getRole()">
    
       <button (click)="openAddModal()"

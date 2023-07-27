@@ -1,11 +1,14 @@
 <div [ngClass]="{'justify-center': setProductDetails==false}"
   class="flex flex-row h-full gap-6 p-5 pt-16 justify-evenly">
-  <ng-container *ngIf="allOrders.length < 1">
-     <p class="text-gray-300 font-medium">No orders placed yet</p>
-  </ng-container>
-  <ng-container *ngIf="allOrders.length > 0">
+  
+ 
+   
     <div class="w-1/2 flex flex-col gap-6 p-5">
-
+      <div class="flex flex-row justify-center">
+        <button type="button" (click)="getPending()" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2">Pending</button>
+        <button type="button" (click)="getCompleted()" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2">Completed</button>
+      </div>
+      <ng-container *ngIf="allOrders.length > 0">
       <div *ngFor="let order of allOrders" class="w-full bg-white h-fit p-4 shadow-md border rounded-lg hover:border-2 hover:border-purple-600">
         <ng-container *ngIf="order.id">
           <button (click)="setProduct(order.id)" class="w-full flex flex-nowrap flex-row justify-between">
@@ -24,11 +27,15 @@
             </div>
           </button>
         </ng-container>
+        <ng-container *ngIf="allOrders.length < 1">
+          <p class="text-gray-300 font-medium">No orders placed yet</p>
+       </ng-container>
       </div>
+    </ng-container>
     </div>
-  </ng-container>
+  
   <ng-container *ngIf="setProductDetails">
-    <div class="h-fit  bg-white shadow rounded-md px-4 py-6">
+    <div class="h-fit md:w-1/4 bg-white shadow rounded-md px-4 py-6">
       <h3 class="text-base font-semibold text-purple-900"> {{ products.bill }}</h3>
 
       <ul class="mt-2">
@@ -56,13 +63,14 @@
         <p class="text-sm font-medium text-gray-900">Total</p>
         <p class="text-lg font-semibold text-emerald-700">{{products.total | currency : "INR"}}</p>
       </div>
-
+    <ng-container *ngIf = getRole()>
       <div class="mt-6 text-center">
-        <button type="button" (click)="markCompleted()"
+        <button type="button" (click)="markCompleted(products.orderID)"
           class="group inline-flex w-full items-center justify-center rounded-md bg-purple-900 px-4 py-2 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-purple-800">
           Mark as Completed
         </button>
       </div>
+    </ng-container>
     </div>
   </ng-container>
 </div>

@@ -6,6 +6,7 @@ import Bill from 'src/app/model/Bill';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import User from 'src/app/model/User';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -20,7 +21,8 @@ export class CartComponent {
   constructor(    
     private toastr: ToastrService, 
     private sharedDataService: SharedDataService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private router : Router,
   ) {}
 
   ngOnInit(): void {
@@ -74,10 +76,11 @@ export class CartComponent {
       this.orderService.addBill(orders).subscribe(
         (res: any) => {
           this.toastr.success('Your order is placed!', 'Order successful');
-          console.log(res);
+          // console.log(res);
         },
         (error: HttpErrorResponse) => {
           this.toastr.error('Error in placing order', 'Order Unsuccessful');
+          this.router.navigate(['/orders']);
           console.log(error.message);
         }
       );

@@ -6,5 +6,5 @@ export default interface Bill {
   lastName: string;
   productDetail: string; //previously Order[] = [];
   totalAmount: number;
-  status?: string;
+  completed?: boolean;
 }

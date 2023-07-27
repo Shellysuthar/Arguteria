@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { OrderComponent } from './components/order/order.component';
 import { CartComponent } from './components/cart/cart.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -26,8 +25,7 @@ import { AddPollComponent } from './components/add-poll/add-poll.component';
     AppComponent,
     NavbarComponent,
     LoginComponent,
-    RegisterComponent,
-    DashboardComponent,
+    RegisterComponent, 
     OrderComponent,
     CartComponent,
     MenuComponent,
