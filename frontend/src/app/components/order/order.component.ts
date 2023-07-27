@@ -103,6 +103,7 @@ export class OrderComponent implements OnInit {
    
     this.products = order?.productDetail ;
     this.products.orderID = order?.id;
+    this.products.status = order?.completed;
     this.products.bill = order?.uuid;
     this.products.total = order?.totalAmount;
     this.setProductDetails = true;

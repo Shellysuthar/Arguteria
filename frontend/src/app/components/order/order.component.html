@@ -64,7 +64,7 @@
         <p class="text-lg font-semibold text-emerald-700">{{products.total | currency : "INR"}}</p>
       </div>
     <ng-container *ngIf = getRole()>
-      <div class="mt-6 text-center">
+      <div *ngIf = !products.status class="mt-6 text-center">
         <button type="button" (click)="markCompleted(products.orderID)"
           class="group inline-flex w-full items-center justify-center rounded-md bg-purple-900 px-4 py-2 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-purple-800">
           Mark as Completed
