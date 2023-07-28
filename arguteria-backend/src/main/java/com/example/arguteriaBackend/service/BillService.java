@@ -8,6 +8,10 @@ import java.util.Map;
 
 public interface BillService {
     ResponseEntity<String> generateBill(Map<String, Object> requestMap);
+    ResponseEntity<List<Bill>> getCompletedBill();
+    ResponseEntity<List<Bill>> getPendingBill();
 
     ResponseEntity<List<Bill>> getBill();
+
+    ResponseEntity<String> updateStatus(Integer id);
 }

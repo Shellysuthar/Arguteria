@@ -20,30 +20,7 @@ export class PollComponent implements OnInit {
   userDetails!: User;
   polls: Poll[] = [];
   voteForm!: FormGroup;
-  // poll = [
-  //   {
-  //     id: 102,
-  //     options: [
-  //       { id: 1, option: "Option A", score: 1 },
-  //       { id: 2, option: "Option B", score: 1 },
-  //     ],
-  //     votedUsers: ["2"],
-  //     title: "Sample Poll",
-  //     visible: true,
-  //     endDate: "2022-12-31",
-  //   },
-  //   {
-  //     id: 152,
-  //     options: [
-  //       { id: 52, option: "Sabzi + roti", score: 0 },
-  //       { id: 53, option: "Dal + Rice", score: 1 },
-  //     ],
-  //     votedUsers: ["1"],
-  //     title: "Lunch Poll",
-  //     visible: true,
-  //     endDate: "2023-08-31",
-  //   },
-  // ];
+  
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
@@ -109,11 +86,8 @@ export class PollComponent implements OnInit {
   }
 
   formatEndDate(dateTime: string): string {
-    let date = new Date(dateTime);
-    console.log(dateTime)
-    console.log( date.toLocaleTimeString())
-    return date.toLocaleString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-    // Output: "25 July 2023, 18:30" 
+    let date = new Date(dateTime);    
+    return date.toLocaleString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' ,hour: 'numeric', minute: 'numeric'});
 }
 
   getPolls() {

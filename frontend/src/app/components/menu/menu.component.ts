@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/cor
 
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import OrderItem from 'src/app/model/OrderItem';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
@@ -26,6 +27,7 @@ export class MenuComponent implements OnInit {
   constructor(
     private menuService: MenuService,
     private authService: AuthService,
+    private toastr: ToastrService,
     private fb: FormBuilder,
     private modalService: NgbModal
   ) {}
@@ -58,9 +60,9 @@ export class MenuComponent implements OnInit {
     this.menuService.addProduct(product).subscribe(
       (res: any) => {
         this.getProducts();
+        this.toastr.success(res);
       },
-      (error: HttpErrorResponse) => {
-        this.getProducts();
+      (error: HttpErrorResponse) => {      
         console.log(error.message);
       }
     );
@@ -81,6 +83,7 @@ export class MenuComponent implements OnInit {
     this.menuService.updateProduct(item).subscribe(
       (res: any) => {
         this.getProducts();
+        this.toastr.success(res);
       },
       (error: HttpErrorResponse) => {
         console.log(error.message);
@@ -95,6 +98,7 @@ export class MenuComponent implements OnInit {
         this.getProducts();
       },
       (error: HttpErrorResponse) => {
+        this.toastr.success(error.message);
         console.log(error.message);
       }
     );

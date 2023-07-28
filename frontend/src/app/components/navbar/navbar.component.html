@@ -27,6 +27,11 @@
           <li routerLink="/poll" class="block cursor-pointer md:px-4 transition hover:text-purple-500 hover:underline ">
             <span>Poll</span>      
           </li>
+          <ng-container *ngIf = "getRole()">
+            <li routerLink="/dashboard" class="block cursor-pointer md:px-4 transition hover:text-purple-500 hover:underline ">
+              <span>Add Poll</span>      
+            </li>
+          </ng-container>
         </ul>
       </div>
       <div class="flex items-center">
@@ -46,9 +51,9 @@
         </ng-container>
         <ng-container *ngIf="isAuthenticated()">          
             <ng-container *ngIf="!getRole()">
-              {{ userDetails.userName }}
+              <p class="text-purple-300 hover:text-gray-500 ">{{ userDetails.userName }}</p>
             </ng-container>
-            <ng-container *ngIf="getRole()"> ADMIN </ng-container>
+            <ng-container *ngIf="getRole()"> <p class="text-purple-300 hover:text-gray-500 ">ADMIN </p></ng-container>
           <a
             (click)="logOut()"
             class="cursor-pointer bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 lg:px-4 lg:py-2 rounded-md ml-2 lg:ml-4"

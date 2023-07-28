@@ -27,8 +27,8 @@ public class ProductServiceImpl implements ProductService {
     public ResponseEntity<String> addProduct(Map<String, String> requestMap) {
         try{
             if(jwtFilter.isAdmin()){
-                if(this.validateProductMap(requestMap,false)){
-                    productRepo.save(this.getProductFromMap(requestMap,false));
+                if(this.validateProductMap(requestMap)){
+                    productRepo.save(this.getProductFromMap(requestMap));
                     return new ResponseEntity<>("New Product was added successfully",HttpStatus.OK);
                 }
                 return new ResponseEntity<>("Invalid Data",HttpStatus.BAD_REQUEST);
@@ -53,14 +53,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseEntity<String> updateProduct(Map<String, String> requestMap) {
         try{
+            System.out.println( "Inside update");
             if(jwtFilter.isAdmin()){
-                if(this.validateProductMap(requestMap,true)){
-                    Optional<Product> productRepoById=productRepo.findById(Integer.parseInt(requestMap.get("id")));
-                    if(productRepoById.isPresent()){
-                        Product productFromMap=this.getProductFromMap(requestMap,true);
-                        productFromMap.setStatus(productRepoById.get().getStatus());
-                        productRepo.save(productFromMap);
-                          return new ResponseEntity<>("Product Updated Successfully",HttpStatus.OK) ;
+                if(this.validateProductMap(requestMap)){
+                    Optional<Product> product=productRepo.findById(Integer.parseInt(requestMap.get("id")));
+                    if(product.isPresent()){
+                        product.get().setName(requestMap.get("name"));
+                        product.get().setDescription(requestMap.get("description"));
+                        product.get().setPrice(Integer.parseInt(requestMap.get("price")));
+                        System.out.println( "Inside update"+ product.get());
+                        productRepo.save(product.get());
+                        return new ResponseEntity<>("Product Updated Successfully",HttpStatus.OK) ;
 
                     }else return new ResponseEntity<>("Product with id " + requestMap.get("id") + " does not exists", HttpStatus.NOT_FOUND);
                 }else return new ResponseEntity<>("Data is Invalid",HttpStatus.BAD_REQUEST);
@@ -92,23 +95,16 @@ public class ProductServiceImpl implements ProductService {
         return new ResponseEntity<>("Something went wrong due to server",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private Product getProductFromMap(Map<String, String> requestMap, boolean isAdd) {
-        Product product=new Product();
-        if(isAdd){
-            product.setId(Integer.parseInt(requestMap.get("id")));
-        }else product.setStatus("true");
-        product.setName(requestMap.get("name"));
-        product.setDescription(requestMap.get("description"));
-        product.setPrice(Integer.parseInt(requestMap.get("price")));
+    private Product getProductFromMap(Map<String, String> requestMap) {
+        Product product=new Product(requestMap.get("name"),
+                                    requestMap.get("description"),
+                                    Integer.parseInt(requestMap.get("price")));
         return product;
-
     }
 
-    private boolean validateProductMap(Map<String,String> requestMap,boolean validateId){
-        if(requestMap.containsKey("name")){
-            if(requestMap.containsKey("id")&& validateId){
-                return true;
-            }else return !validateId;
+    private boolean validateProductMap(Map<String,String> requestMap){
+        if(requestMap.containsKey("name") && requestMap.containsKey("description") && requestMap.containsKey("price")){
+            return true;
         }
         return false;
     }

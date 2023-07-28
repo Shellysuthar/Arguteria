@@ -22,37 +22,64 @@ export class OrderComponent implements OnInit {
 
   constructor(
     private orderService: OrderService, 
+    private toastr: ToastrService,
     private authService: AuthService, 
     private sharedDataService: SharedDataService,
   ) {}
 
+
   ngOnInit(): void {
     this.sharedDataService.userDetailsObservable.subscribe((userDetails) => {
       this.userDetails = userDetails;
-    });
-    if( this.getRole() ){
-      this.getOrders().subscribe(
-        orders => {
-          this.allOrders = orders;
-          // console.log(orders);
-        },
-        error => {
-          console.error(error);
-        }
-      );
-    }
-    else{
-      // gets Bills of User
-      this.getOrders().subscribe(
-        orders => {
-          this.allOrders = orders;
-          console.log(this.allOrders);
-        },
-        error => {
-          console.error(error);
-        }
-      );
-    }
+    });   
+      this.getPending();    
+  }
+  
+  getPending() {
+    this.getPendingOrders().subscribe(
+      orders => {
+        this.allOrders = orders;
+        // console.log(orders);
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+  
+  getCompleted() {
+    this.getCompletedOrders().subscribe(
+      orders => {
+        this.allOrders = orders;
+        // console.log(orders);
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+ 
+  getCompletedOrders(): Observable<any[]> {
+    return this.orderService.getCompletedBills().pipe(
+      map(allOrders => {
+        return allOrders.map((order: any) =>  {
+          const parsedProductDetail = JSON.parse(order.productDetail);
+          return { ...order, productDetail: parsedProductDetail };
+        });
+      })
+    );
+  }
+
+  getPendingOrders(): Observable<any[]> {
+    return this.orderService.getPendingBills().pipe(
+      map(allOrders => {
+        return allOrders.map((order: any) =>  {
+          const parsedProductDetail = JSON.parse(order.productDetail);
+          return { ...order, productDetail: parsedProductDetail };
+        });
+      })
+    );
   }
 
   getDate( bill: string ) : string {
@@ -71,27 +98,26 @@ export class OrderComponent implements OnInit {
     return (hour % 12 || 12) + ":" + minute + (hour < 12 ? "AM" : "PM");
 }
 
-  getOrders(): Observable<any[]> {
-    return this.orderService.getAllBills().pipe(
-      map(allOrders => {
-        return allOrders.map((order: any) =>  {
-          const parsedProductDetail = JSON.parse(order.productDetail);
-          return { ...order, productDetail: parsedProductDetail };
-        });
-      })
-    );
-  }
-
   setProduct(id:number){
     let order = this.allOrders.find((order) => order.id === id);
+   
     this.products = order?.productDetail ;
+    this.products.orderID = order?.id;
+    this.products.status = order?.completed;
     this.products.bill = order?.uuid;
     this.products.total = order?.totalAmount;
     this.setProductDetails = true;
   }
 
-  markCompleted() : boolean{
-    return true;
+  markCompleted(id:number){
+    this.orderService.updateStatus(id).subscribe(
+      (res: any) => {
+        this.toastr.success(res);
+      },
+      (error: HttpErrorResponse) => {      
+        this.toastr.error(error.message);
+      }
+    );
   }
 
   getRole() {

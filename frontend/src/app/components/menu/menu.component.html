@@ -1,5 +1,5 @@
 <!-- menu.component.html -->
-<div [ngClass]="{'flex-col': getRole()}" class="flex items-center bg-gray-100 py-12 sm:py-16 lg:py-20 text-gray-700">
+<div [ngClass]="{'flex-col items-center': getRole()}" class="flex items-start bg-gray-100 py-12 sm:py-16 lg:py-20 text-gray-700">
   <ng-container *ngIf="getRole()">
    
       <button (click)="openAddModal()"
@@ -80,14 +80,14 @@
             <input type="number" id="price" formControlName="price"
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
           </div>
-          <div class="flex justify-evenly">
+          <div class="flex items-center justify-evenly text-base ">
             <button type="submit" [disabled]="addItemForm.invalid"
-              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-2 rounded">
               Add item
-              <i class="text-2xl text-white fa fa-plus"></i>
+              <i class="text-white fa fa-plus"></i>
             </button>
             <button id="delete-cancel-button" (click)="closeAddModal()" type="button"
-                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
                 Cancel
             </button>
           </div>
@@ -101,15 +101,15 @@
   <ng-template #editModal>
     <div class="relative z-10" aria-labelledby="edit-modal" role="dialog" aria-modal="true">
       <div class="fixed inset-0 z-10 overflow-y-auto">
-        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="flex min-h-full justify-center p-4 text-center sm:items-center sm:p-0">
           <div
-            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all w-[800px]">
+            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all">
             <button (click)="closeEditModal()" class="absolute top-6 right-6">
               <i class="fas fa-times"></i>
             </button>
             <div class="bg-white px-4 pt-5 pb-4 w-full">
-              <div class="">
-                <div class="mt-0 sm:ml-4 text-left">
+              
+                <div class="flex flex-col justify-center items-center mt-0 ">
                   <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
                     Update
                   </h3>
@@ -151,7 +151,7 @@
                     </div>
                   </form>
                 </div>
-              </div>
+              
             </div>
           </div>
         </div>
